@@ -9,7 +9,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+//
 public class Connexion extends JFrame {
     private JTextField champUser;
     private JPasswordField champPassword;

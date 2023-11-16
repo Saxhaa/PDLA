@@ -8,7 +8,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-
+//
 public class CreationAccount extends JFrame {
     private JTextField campoUsuario;
     private JPasswordField campoPassword;

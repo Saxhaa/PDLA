@@ -9,6 +9,9 @@ public class DBManager {
     static String username = "projet_gei_020";
     static String password = "Ahlah6ug";
     private static Connection connection;
+
+    private static int tableUser;
+    private static int tableMission;
     private static DBManager instance;
 
     private DBManager() {
@@ -56,7 +59,7 @@ public class DBManager {
             stmt.setInt(6, type);
 //test
             int filasAfectadas = stmt.executeUpdate();
-
+            tableMission=1;
             return filasAfectadas > 0;
 
         } catch (SQLException e) {
@@ -64,6 +67,26 @@ public class DBManager {
             return false;
         }
 
+    }
+
+    public void CreateTableMission(){ //la estoy haciendo
+        try {
+            Connection conn = Connection();
+            Statement stmt = conn.createStatement();
+            //étape 4: exécuter la requéte
+            String sql = "CREATE TABLE Mission " +
+                    "(type VARCHAR(255), " +
+                    " description VARCHAR(255), " +
+                    " date VARCHAR(255), " +
+                    " region VARCHAR(255), " +
+                    " idMission INTEGER, " +
+                    " idUtilisateur INTEGER)";
+            stmt.executeUpdate(sql);
+            System.out.println("Table créée Mission avec succés...");
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
         public void CreateTableUser(){
@@ -79,35 +102,38 @@ public class DBManager {
                         " password VARCHAR(255), " +
                         " type INTEGER)";
                 stmt.executeUpdate(sql);
-                System.out.println("Table créée avec succés...");
-                //étape 5: fermez l'objet de connexion
-                conn.close();
+                System.out.println("Table User créée avec succés...");
+                tableUser=1;
+
             } catch (Exception e) {
                 System.out.println(e);
             }
         }
 
-    public void CreateTableMission(){ //la estoy haciendo
-        try {
-            Connection conn = Connection();
-            Statement stmt = conn.createStatement();
-            //étape 4: exécuter la requéte
-            String sql = "CREATE TABLE User " +
-                    "(id INTEGER," +
-                    " nom VARCHAR(255), " +
-                    " prenom VARCHAR(255), " +
-                    " mail VARCHAR(255), " +
-                    " password VARCHAR(255), " +
-                    " type INTEGER)";
-            stmt.executeUpdate(sql);
-            System.out.println("Table créée avec succés...");
-            //étape 5: fermez l'objet de connexion
-            conn.close();
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-    }
 
+
+    public boolean insertMission(String description, String date, String region, int idMission, int idUtilisateur, String type) {
+        PreparedStatement stmt = null;
+        try  {
+            String sql = "INSERT INTO Mision (type,description,date,region ,idMission, idUtilisateur) VALUES (?, ?, ?, ?, ?, ?)";
+            stmt = connection.prepareStatement(sql);
+            stmt.setString(1,type );
+            stmt.setString(2, description);
+            stmt.setString(3,date);
+            stmt.setString(4, region);
+            stmt.setInt(5, idMission);
+            stmt.setInt(6, idUtilisateur);
+//test
+            int filasAfectadas = stmt.executeUpdate();
+            tableMission=1;
+            return filasAfectadas > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+    }
 
         public static void main(String[] args) {
             // Test de la connexion
@@ -116,8 +142,10 @@ public class DBManager {
             if (connection != null) {
                 System.out.println("Connexion réussie !");
                 DBManager db = DBManager.getInstance();
-                db.CreateTableUser();
-
+                if (tableMission!=1)
+                    db.CreateTableMission();
+                if (tableUser!=1)
+                    db.CreateTableUser();
 
                 try {
                     connection.close();

@@ -44,7 +44,7 @@ public class DBManager {
     }
 
 
-    public boolean insertUser(int id,String nom, String prenom, String password, int tipoPersona) {
+    public boolean insertUser(int id,String nom, String prenom, String mail, String password, int tipoPersona) {
 
         try  {
             String sql = "INSERT INTO User (id,nom,prenom, password, tipo_persona) VALUES (?, ?, ?, ?)";
@@ -52,8 +52,9 @@ public class DBManager {
             preparedStatement.setInt(1, id);
             preparedStatement.setString(2, nom);
             preparedStatement.setString(3, prenom);
-            preparedStatement.setString(4, password);
-            preparedStatement.setInt(5, tipoPersona);
+            preparedStatement.setString(4, mail);
+            preparedStatement.setString(5, password);
+            preparedStatement.setInt(6, tipoPersona);
 
             int filasAfectadas = preparedStatement.executeUpdate();
 

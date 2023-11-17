@@ -1,5 +1,8 @@
 package org.example.Interfaces;
 import org.example.Database.DBManager;
+import org.example.Users.Utilisateur;
+import org.example.Users.enumUtilisateur;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -12,6 +15,8 @@ import java.sql.SQLException;
 public class CreationAccount extends JFrame {
     private JTextField nom;
     private JTextField prenom;
+
+    private JTextField mail;
     private JPasswordField campoPassword;
     private JComboBox<String> comboTipoPersona;
     private JButton botonCrearUsuario;
@@ -24,11 +29,13 @@ public class CreationAccount extends JFrame {
 
         JLabel etiquetaNom = new JLabel("Nom de l'utilisateur:");
         JLabel etiquetaPrenom = new JLabel("Prenom de l'utilisateur:");
+        JLabel etiquetaMail = new JLabel("Mail de l'utilisateur:");
         JLabel etiquetaPassword = new JLabel("Mot de passe:");
         JLabel etiquetaTipoPersona = new JLabel("Profil utilisateur:");
 
         nom = new JTextField();
         prenom = new JTextField();
+        mail = new JTextField();
         campoPassword = new JPasswordField();
 
         String[] tiposPersona = {"Valideur", "Demandeur", "Benevole"};
@@ -41,13 +48,24 @@ public class CreationAccount extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String nomText = nom.getText();
                 String prenomText = prenom.getText();
+                String mailText = mail.getText();
                 String password = new String(campoPassword.getPassword());
-              //  String identificador = campoIdentificador.getText();
-                int tipoPersona = comboTipoPersona.getSelectedIndex() + 1; // Convertir el índice del JComboBox a 1, 2 o 3
+                int tipoPersona = comboTipoPersona.getSelectedIndex() + 1;// Convertir el índice del JComboBox a 1, 2 o 3
+
+                //si on veut inserer le type et pas un nb
+                /*enumUtilisateur type;
+                if (tipoPersona==1)
+                    type=enumUtilisateur.valideur;
+                else if (tipoPersona==2)
+                    type=enumUtilisateur.demandeur;
+                else if (tipoPersona==3)
+                    type=enumUtilisateur.benevole;*/
+
                 DBManager db = DBManager.getInstance();
-                int id=0;
+                Utilisateur util = new Utilisateur(nomText, prenomText, mailText, password, tipoPersona);
+                int id;
                 // Llama a un método para guardar los datos en la base de datoaucun de ses répertoires parents (jusqu'au points (debes implementar esta lógica)
-                if (db.insertUser(id,nomText, prenomText, password, tipoPersona)) {
+                if (db.insertUser(util.getId(), nomText, prenomText, password,mailText, tipoPersona)) {
                     JOptionPane.showMessageDialog(null, "Usuario creado con éxito.");
                 } else {
                     JOptionPane.showMessageDialog(null, "Erreur lors de la creation de l'utilisateur.");
@@ -61,8 +79,8 @@ public class CreationAccount extends JFrame {
         add(prenom);
         add(etiquetaPassword);
         add(campoPassword);
-      //  add(etiquetaIdentificador);
-       // add(campoIdentificador);
+        //  add(etiquetaIdentificador);
+        // add(campoIdentificador);
         add(etiquetaTipoPersona);
         add(comboTipoPersona);
         add(new JLabel(""));
@@ -82,3 +100,8 @@ public class CreationAccount extends JFrame {
         });
     }
 }
+
+//Valideur=1
+//Demandeur
+//Benevole=3
+//

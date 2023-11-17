@@ -55,7 +55,7 @@ public class DBManager {
             preparedStatement.setString(4, mail);
             preparedStatement.setString(5, password);
             preparedStatement.setInt(6, tipoPersona);
-
+//
             int filasAfectadas = preparedStatement.executeUpdate();
 
             return filasAfectadas > 0;

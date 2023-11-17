@@ -40,3 +40,9 @@ public class Utilisateur {
     }
 }
 //
+
+//A faire
+//une classe par type user
+//dans demandeur : constructeur +une methode de demande d'aide
+//valideur : constructeur + valider + renoncer
+//....

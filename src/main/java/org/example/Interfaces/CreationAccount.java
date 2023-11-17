@@ -41,7 +41,7 @@ public class CreationAccount extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String usuario = campoUsuario.getText();
                 String password = new String(campoPassword.getPassword());
-                String identificador = campoIdentificador.getText(); //
+                String identificador = campoIdentificador.getText();
                 int tipoPersona = comboTipoPersona.getSelectedIndex() + 1; // Convertir el índice del JComboBox a 1, 2 o 3
                 DBManager db = DBManager.getInstance();
                 // Llama a un método para guardar los datos en la base de datoaucun de ses répertoires parents (jusqu'au points (debes implementar esta lógica)

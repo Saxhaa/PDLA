@@ -1,5 +1,5 @@
 package org.example.Interfaces;
-
+import org.example.Database.DBManager;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -43,9 +43,9 @@ public class CreationAccount extends JFrame {
                 String password = new String(campoPassword.getPassword());
                 String identificador = campoIdentificador.getText();
                 int tipoPersona = comboTipoPersona.getSelectedIndex() + 1; // Convertir el índice del JComboBox a 1, 2 o 3
-
+                DBManager db = DBManager.getInstance();
                 // Llama a un método para guardar los datos en la base de datoaucun de ses répertoires parents (jusqu'au points (debes implementar esta lógica)
-                if (guardarUsuarioEnBD(usuario, password, identificador, tipoPersona)) {
+                if (db.guardarUsuarioEnBD(usuario, password, identificador, tipoPersona)) {
                     JOptionPane.showMessageDialog(null, "Usuario creado con éxito.");
                 } else {
                     JOptionPane.showMessageDialog(null, "Erreur lors de la creation de l'utilisateur.");
@@ -68,29 +68,7 @@ public class CreationAccount extends JFrame {
     }
 
     // Método para guardar los datos en la base de datos (debes implementar esta lógica)
-    private boolean guardarUsuarioEnBD(String usuario, String password, String identificador, int tipoPersona) {
-        String servidor = "srv-bdens.insa-toulouse.fr:3306";
-        String baseDeDatos = "projet_gei_020";
-        String usuarioBD = "projet_gei_020";
-        String contrasenaBD = "Ahlah6ug";
-        String url = "jdbc:mysql://" + servidor + "/" + baseDeDatos;
 
-        try (Connection connection = DriverManager.getConnection(url, usuarioBD, contrasenaBD)) {
-            String sql = "INSERT INTO usuarios (nombre_usuario, contrasena, identificador, tipo_persona) VALUES (?, ?, ?, ?)";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, usuario);
-            preparedStatement.setString(2, password);
-            preparedStatement.setString(3, identificador);
-            preparedStatement.setInt(4, tipoPersona);
-
-            int filasAfectadas = preparedStatement.executeUpdate();
-
-            return filasAfectadas > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {

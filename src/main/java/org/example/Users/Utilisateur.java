@@ -6,6 +6,8 @@ public class Utilisateur {
     private String mail;
     private String password;
 
+    private static int totalUtilisateur = 0;
+
     private int id;
 
     public Utilisateur (String nom, String prenom, String mail, String password, int id){
@@ -13,7 +15,7 @@ public class Utilisateur {
         this.prenom = prenom;
         this.password = password;
         this.mail = mail;
-        this.id = id;
+        this.id = totalUtilisateur++;
     }
 
     public String getNom() {

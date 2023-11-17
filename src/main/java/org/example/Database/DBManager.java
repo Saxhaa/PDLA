@@ -29,8 +29,14 @@ public class DBManager {
             try {
                 Class.forName(driver);
                 connection = DriverManager.getConnection(url, username, password);
-            } catch (Exception e) {
-                e.printStackTrace();
+                System.out.println("connexion reussie à la bdd");
+            }  catch (SQLException ex) {
+                // handle any errors
+                System.out.println("SQLException: " + ex.getMessage());
+                System.out.println("SQLState: " + ex.getSQLState());
+                System.out.println("VendorError: " + ex.getErrorCode());
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
             }
 
         }
@@ -38,15 +44,16 @@ public class DBManager {
     }
 
 
-    public boolean guardarUsuarioEnBD(String usuario, String password, String identificador, int tipoPersona) {
-       Connection connection = Connection();
+    public boolean insertUser(int id,String nom, String prenom, String password, int tipoPersona) {
+
         try  {
-            String sql = "INSERT INTO Utilisateur (nombre_usuario, contrasena, identificador, tipo_persona) VALUES (?, ?, ?, ?)";
+            String sql = "INSERT INTO User (id,nom,prenom, password, tipo_persona) VALUES (?, ?, ?, ?)";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, usuario);
-            preparedStatement.setString(2, password);
-            preparedStatement.setString(3, identificador);
-            preparedStatement.setInt(4, tipoPersona);
+            preparedStatement.setInt(1, id);
+            preparedStatement.setString(2, nom);
+            preparedStatement.setString(3, prenom);
+            preparedStatement.setString(4, password);
+            preparedStatement.setInt(5, tipoPersona);
 
             int filasAfectadas = preparedStatement.executeUpdate();
 
@@ -57,15 +64,16 @@ public class DBManager {
         }
     }
 
-        public void CreateTable(){
+        public void CreateTableUser(){
             try {
                 Connection conn = Connection();
                 Statement stmt = conn.createStatement();
                 //étape 4: exécuter la requéte
-                String sql = "CREATE TABLE Utilisateur " +
-                        " (nom VARCHAR(255), " +
+                String sql = "CREATE TABLE User " +
+                        "(id INTEGER," +
+                        " nom VARCHAR(255), " +
+                        " prenom VARCHAR(255), " +
                         " password VARCHAR(255), " +
-                        "id INTEGER , " +
                         " type INTEGER)";
                 stmt.executeUpdate(sql);
                 System.out.println("Table créée avec succés...");
@@ -83,6 +91,10 @@ public class DBManager {
 
             if (connection != null) {
                 System.out.println("Connexion réussie !");
+                DBManager db = DBManager.getInstance();
+                db.CreateTableUser();
+
+
                 try {
                     connection.close();
                     System.out.println("Connexion fermée avec succès.");
@@ -93,5 +105,6 @@ public class DBManager {
             } else {
                 System.out.println("Échec de la connexion.");
             }
+
         }
     }

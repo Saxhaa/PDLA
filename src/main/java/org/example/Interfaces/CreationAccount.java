@@ -10,9 +10,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 //
 public class CreationAccount extends JFrame {
-    private JTextField campoUsuario;
+    private JTextField nom;
+    private JTextField prenom;
     private JPasswordField campoPassword;
-    private JTextField campoIdentificador;
     private JComboBox<String> comboTipoPersona;
     private JButton botonCrearUsuario;
 
@@ -22,14 +22,14 @@ public class CreationAccount extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new GridLayout(6, 2));
 
-        JLabel etiquetaUsuario = new JLabel("Nom de l'utilisateur:");
+        JLabel etiquetaNom = new JLabel("Nom de l'utilisateur:");
+        JLabel etiquetaPrenom = new JLabel("Prenom de l'utilisateur:");
         JLabel etiquetaPassword = new JLabel("Mot de passe:");
-        JLabel etiquetaIdentificador = new JLabel("Identifiant:");
         JLabel etiquetaTipoPersona = new JLabel("Profil utilisateur:");
 
-        campoUsuario = new JTextField();
+        nom = new JTextField();
+        prenom = new JTextField();
         campoPassword = new JPasswordField();
-        campoIdentificador = new JTextField();
 
         String[] tiposPersona = {"Valideur", "Demandeur", "Benevole"};
         comboTipoPersona = new JComboBox<>(tiposPersona);
@@ -39,13 +39,15 @@ public class CreationAccount extends JFrame {
         botonCrearUsuario.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String usuario = campoUsuario.getText();
+                String nomText = nom.getText();
+                String prenomText = prenom.getText();
                 String password = new String(campoPassword.getPassword());
-                String identificador = campoIdentificador.getText(); //
+              //  String identificador = campoIdentificador.getText(); //
                 int tipoPersona = comboTipoPersona.getSelectedIndex() + 1; // Convertir el índice del JComboBox a 1, 2 o 3
                 DBManager db = DBManager.getInstance();
+                int id=0;
                 // Llama a un método para guardar los datos en la base de datoaucun de ses répertoires parents (jusqu'au points (debes implementar esta lógica)
-                if (db.guardarUsuarioEnBD(usuario, password, identificador, tipoPersona)) {
+                if (db.insertUser(id,nomText, prenomText, password, tipoPersona)) {
                     JOptionPane.showMessageDialog(null, "Usuario creado con éxito.");
                 } else {
                     JOptionPane.showMessageDialog(null, "Erreur lors de la creation de l'utilisateur.");
@@ -53,12 +55,14 @@ public class CreationAccount extends JFrame {
             }
         });
 
-        add(etiquetaUsuario);
-        add(campoUsuario);
+        add(etiquetaNom);
+        add(nom);
+        add(etiquetaPrenom);
+        add(prenom);
         add(etiquetaPassword);
         add(campoPassword);
-        add(etiquetaIdentificador);
-        add(campoIdentificador);
+      //  add(etiquetaIdentificador);
+       // add(campoIdentificador);
         add(etiquetaTipoPersona);
         add(comboTipoPersona);
         add(new JLabel(""));

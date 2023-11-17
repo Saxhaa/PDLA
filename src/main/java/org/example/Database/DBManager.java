@@ -2,7 +2,6 @@ package org.example.Database;
 
 import java.sql.*;
 
-
 public class DBManager {
 
     static String driver = "com.mysql.cj.jdbc.Driver";
@@ -44,25 +43,27 @@ public class DBManager {
     }
 
 
-    public boolean insertUser(int id,String nom, String prenom, String mail, String password, int tipoPersona) {
-
+    public boolean insertUser(int id,String nom, String prenom, String mail, String password, int type) {
+        PreparedStatement stmt = null;
         try  {
-            String sql = "INSERT INTO User (id,nom,prenom, password, tipo_persona) VALUES (?, ?, ?, ?)";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, id);
-            preparedStatement.setString(2, nom);
-            preparedStatement.setString(3, prenom);
-            preparedStatement.setString(4, mail);
-            preparedStatement.setString(5, password);
-            preparedStatement.setInt(6, tipoPersona);
+            String sql = "INSERT INTO User (id,nom,prenom, mail,password, type) VALUES (?, ?, ?, ?, ?, ?)";
+            stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, id);
+            stmt.setString(2, nom);
+            stmt.setString(3, prenom);
+            stmt.setString(4, mail);
+            stmt.setString(5, password);
+            stmt.setInt(6, type);
 //test
-            int filasAfectadas = preparedStatement.executeUpdate();
+            int filasAfectadas = stmt.executeUpdate();
 
             return filasAfectadas > 0;
+
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
+
     }
 
         public void CreateTableUser(){
@@ -74,6 +75,7 @@ public class DBManager {
                         "(id INTEGER," +
                         " nom VARCHAR(255), " +
                         " prenom VARCHAR(255), " +
+                        " mail VARCHAR(255), " +
                         " password VARCHAR(255), " +
                         " type INTEGER)";
                 stmt.executeUpdate(sql);
@@ -84,6 +86,27 @@ public class DBManager {
                 System.out.println(e);
             }
         }
+
+    public void CreateTableMission(){ //la estoy haciendo
+        try {
+            Connection conn = Connection();
+            Statement stmt = conn.createStatement();
+            //étape 4: exécuter la requéte
+            String sql = "CREATE TABLE User " +
+                    "(id INTEGER," +
+                    " nom VARCHAR(255), " +
+                    " prenom VARCHAR(255), " +
+                    " mail VARCHAR(255), " +
+                    " password VARCHAR(255), " +
+                    " type INTEGER)";
+            stmt.executeUpdate(sql);
+            System.out.println("Table créée avec succés...");
+            //étape 5: fermez l'objet de connexion
+            conn.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
 
 
         public static void main(String[] args) {
@@ -109,3 +132,6 @@ public class DBManager {
 
         }
     }
+
+    //mysql -h srv-bdens.insa-toulouse.fr --port=3306 -u projet_gei_020  -p projet_gei_020
+//Ahlah6ug

@@ -15,7 +15,6 @@ import java.sql.SQLException;
 public class CreationAccount extends JFrame {
     private JTextField nom;
     private JTextField prenom;
-
     private JTextField mail;
     private JPasswordField campoPassword;
     private JComboBox<String> comboTipoPersona;
@@ -63,9 +62,9 @@ public class CreationAccount extends JFrame {
 
                 DBManager db = DBManager.getInstance();
                 Utilisateur util = new Utilisateur(nomText, prenomText, mailText, password, tipoPersona);
-                int id;
+
                 // Llama a un método para guardar los datos en la base de datoaucun de ses répertoires parents (jusqu'au points (debes implementar esta lógica)
-                if (db.insertUser(util.getId(), nomText, prenomText, password,mailText, tipoPersona)) {
+                if (db.insertUser(util.getId(), nomText, prenomText, mailText, password, tipoPersona)) {
                     JOptionPane.showMessageDialog(null, "Usuario creado con éxito.");
                 } else {
                     JOptionPane.showMessageDialog(null, "Erreur lors de la creation de l'utilisateur.");
@@ -77,6 +76,8 @@ public class CreationAccount extends JFrame {
         add(nom);
         add(etiquetaPrenom);
         add(prenom);
+        add(etiquetaMail);
+        add(mail);
         add(etiquetaPassword);
         add(campoPassword);
         //  add(etiquetaIdentificador);

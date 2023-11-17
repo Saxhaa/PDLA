@@ -42,7 +42,7 @@ public class CreationAccount extends JFrame {
                 String nomText = nom.getText();
                 String prenomText = prenom.getText();
                 String password = new String(campoPassword.getPassword());
-              //  String identificador = campoIdentificador.getText(); //
+              //  String identificador = campoIdentificador.getText();
                 int tipoPersona = comboTipoPersona.getSelectedIndex() + 1; // Convertir el índice del JComboBox a 1, 2 o 3
                 DBManager db = DBManager.getInstance();
                 int id=0;

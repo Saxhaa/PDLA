@@ -86,17 +86,18 @@ public class Connexion extends JFrame {
 }
 
 /*
-je n'ai pas reussi à me connecter avec un utilisateur existant
+J'ai créé le main, a executer pour voir si tout marche
+
+J'ai créé l'interface d'acceuil avant connexion ou inscription
 
 reussite apres inscription d'acceder à l'interface benevole, valideur ou demandeur
 mais PB : interface générale et pas celle de l'utilisateur personnalisée !!!!!!!
+
+je n'ai pas reussi à me connecter avec un utilisateur existant
 
 A faire :
 - les test des fonctions qui marchent (celles dans DBManager)
 - faire en sorte de créer des interfaces personnalisées à chaque utilisateur
 ( voir ses propres demandes en cours .. blabla)
 -reussir à se connecter une fois le compte créé
-
-
-
  */

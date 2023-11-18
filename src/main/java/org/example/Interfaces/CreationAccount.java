@@ -103,6 +103,6 @@ public class CreationAccount extends JFrame {
 }
 
 //Valideur=1
-//Demandeur
+//Demandeur=2
 //Benevole=3
 //

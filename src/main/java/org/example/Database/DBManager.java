@@ -1,5 +1,7 @@
 package org.example.Database;
 
+import org.example.Users.Utilisateur;
+
 import java.sql.*;
 
 public class DBManager {
@@ -134,10 +136,27 @@ public class DBManager {
         }
 
     }
+    // Méthode pour récupérer un utilisateur par son identifiant
+    public Utilisateur getUserByConn(String mail, String password) {
+        Utilisateur utilisateur = null;
+        try (Connection conn = Connection()) {
+            String sql = "SELECT * FROM User WHERE mail = ? and password = ?";
+            try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+                preparedStatement.setString(1, mail);
+                preparedStatement.setString(2, password);
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Erreur lors de la récupération de l'utilisateur.");
+        }
+
+        return utilisateur;
+    }
 
         public static void main(String[] args) {
             // Test de la connexion
-            Connection connection = Connection();
+            /*Connection connection = Connection();
 
             if (connection != null) {
                 System.out.println("Connexion réussie !");
@@ -147,16 +166,10 @@ public class DBManager {
                 if (tableUser!=1)
                     db.CreateTableUser();
 
-                try {
-                    connection.close();
-                    System.out.println("Connexion fermée avec succès.");
-                } catch (SQLException e) {
-                    System.out.println("Échec de la connexion. Message d'erreur : " + e.getMessage());
-                    e.printStackTrace();
-                }
+
             } else {
                 System.out.println("Échec de la connexion.");
-            }
+            }*/
 
         }
     }

@@ -12,13 +12,13 @@ public class Utilisateur {
 
     private int id;
 
-    public Utilisateur (String nom, String prenom, String mail, String password, int type){
+    public Utilisateur(String nom, String prenom, String mail, String password, int type) {
         this.nom = nom;
         this.prenom = prenom;
         this.password = password;
         this.mail = mail;
         this.id = totalUtilisateur++;
-        this.type=type;
+        this.type = type;
     }
 
     public String getNom() {
@@ -33,11 +33,15 @@ public class Utilisateur {
         return this.prenom;
     }
 
-    public int getId() {return this.id;    }
+    public int getId() {
+        return this.id;
+    }
 
     public String getMail() {
         return this.mail;
     }
+
+    public int getType() {return this.type;}
 }
 //
 

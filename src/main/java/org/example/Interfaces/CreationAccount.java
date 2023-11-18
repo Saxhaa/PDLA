@@ -63,14 +63,26 @@ public class CreationAccount extends JFrame {
                 DBManager db = DBManager.getInstance();
                 Utilisateur util = new Utilisateur(nomText, prenomText, mailText, password, tipoPersona);
 
-                // Llama a un método para guardar los datos en la base de datoaucun de ses répertoires parents (jusqu'au points (debes implementar esta lógica)
                 if (db.insertUser(util.getId(), nomText, prenomText, mailText, password, tipoPersona)) {
-                    JOptionPane.showMessageDialog(null, "Usuario creado con éxito.");
+                    JOptionPane.showMessageDialog(null, "Utilisateur créé avec succès.");
+
+                    // Vérification du type d'utilisateur et redirection
+                    if (tipoPersona == 1) {  // Valideur
+                        new ValideurInterface();
+                    } else if (tipoPersona == 2) {  // Demandeur
+                         new DemandeurInterface();
+                    } else if (tipoPersona == 3) {  // Benevole
+                        new BenevoleInterface();
+                    }
+
+                    // Fermer l'interface de création de compte
+                    dispose();
                 } else {
-                    JOptionPane.showMessageDialog(null, "Erreur lors de la creation de l'utilisateur.");
+                    JOptionPane.showMessageDialog(null, "Erreur lors de la création de l'utilisateur.");
                 }
             }
         });
+
 
         add(etiquetaNom);
         add(nom);

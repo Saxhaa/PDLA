@@ -11,3 +11,14 @@ public class Main {
         Accueil page = new Accueil();
     }
 }
+
+
+/*
+
+A faire :
+- les test des fonctions qui marchent (celles dans DBManager)
+-ajouter les infos des missions des users personnalisées dans leur page d'accueil
+( voir ses propres demandes en cours .. blabla)
+-faire les interfaces correctement (plusieurs champs pour créer une demande...blabla)
+
+ */

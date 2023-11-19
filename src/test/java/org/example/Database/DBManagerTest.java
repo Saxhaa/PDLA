@@ -1,4 +1,5 @@
-package org;
+package org.example.Database;
+
 import org.example.Database.DBManager;
 import org.example.Users.Utilisateur;
 

@@ -62,12 +62,13 @@ class DBManagerTest {
 
     @Test
     public void testCreateTableMission() {
+        DBManager db = DBManager.getInstance();
         db.CreateTableMission();
         try {
             Connection conn = db.Connection();
             Statement stmt = conn.createStatement();
-            ResultSet rs = ((Statement) stmt).executeQuery("SELECT * FROM Mission");
-            assertTrue(rs.next(), "Table Mission created successfully");
+            ResultSet rs = stmt.executeQuery("SHOW TABLES LIKE 'Mission'");
+            assertTrue(rs.next(), "La table Mission a été créée avec succès.");
         } catch (Exception e) {
             fail("Exception: " + e);
         }
@@ -87,8 +88,16 @@ class DBManagerTest {
 
     @Test
     public void testCreateTableUser() throws SQLException {
-        // Test de la création de la table User
-        assertTrue(db.CreateTableUser());
+        DBManager db = DBManager.getInstance();
+        db.CreateTableMission();
+        try {
+            Connection conn = db.Connection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SHOW TABLES LIKE 'User'");
+            assertTrue(rs.next(), "La table User a été créée avec succès.");
+        } catch (Exception e) {
+            fail("Exception: " + e);
+        }
     }
 
     @Test

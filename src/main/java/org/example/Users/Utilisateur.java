@@ -12,6 +12,8 @@ public class Utilisateur {
 
     private int id;
 
+    public Utilisateur() {
+    }
     public Utilisateur(String nom, String prenom, String mail, String password, int type) {
         this.nom = nom;
         this.prenom = prenom;
@@ -42,7 +44,25 @@ public class Utilisateur {
     }
 
     public int getType() {return this.type;}
+
+    public void setId(int id) { this.id=id;  }
+
+    public void setNom(String nom) { this.nom=nom;}
+
+
+    public void setPrenom(String prenom) { this.prenom=prenom;
+    }
+
+    public void setPassword(String password) { this.password=password;
+    }
+
+    public void setMail(String mail) { this.mail=mail;
+    }
+
+    public void setType(int type) {this.type=type;
+    }
 }
+
 //
 
 //A faire

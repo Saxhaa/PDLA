@@ -1,5 +1,7 @@
 package org.example.Interfaces;
 
+import org.example.Users.Utilisateur;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -11,10 +13,15 @@ public class ValideurInterface extends JFrame {
     private JTextField benevoleApprovalField;
     private JTextField demandeurApprovalField;
 
-    public ValideurInterface() {
+    private Utilisateur utilisateur;
+    public ValideurInterface( ) {
         initializeUI();
     }
 
+    public ValideurInterface(Utilisateur utilisateur) {
+        this.utilisateur = utilisateur;
+        initializeUI();
+    }
     private void initializeUI() {
         setTitle("Interfaz para Valideur");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -62,6 +69,11 @@ public class ValideurInterface extends JFrame {
         approvalPanel.add(approveButton);
 
         add(approvalPanel);
+
+        // Utilisez les informations de l'utilisateur pour personnaliser l'interface
+        JLabel userLabel = new JLabel("Bienvenue, " + utilisateur.getNom() + " " + utilisateur.getPrenom());
+        userLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        add(userLabel);
 
         setSize(800, 400);
         setLocationRelativeTo(null);

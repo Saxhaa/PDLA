@@ -1,5 +1,7 @@
 package org.example.Interfaces;
 
+import org.example.Users.Utilisateur;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -10,7 +12,13 @@ public class BenevoleInterface extends JFrame {
     private JTextArea requestsTextArea;
     private JTextArea statusTextArea;
 
+    private Utilisateur utilisateur;
     public BenevoleInterface() {
+        initializeUI();
+    }
+
+    public BenevoleInterface(Utilisateur utilisateur) {
+        this.utilisateur = utilisateur;
         initializeUI();
     }
 
@@ -50,6 +58,11 @@ public class BenevoleInterface extends JFrame {
             }
         });
         add(proposeHelpButton);
+
+        //  informations de l'utilisateur pour personnaliser l'interface
+        JLabel userLabel = new JLabel("Bienvenue, " + utilisateur.getNom() + " " + utilisateur.getPrenom());
+        userLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        add(userLabel);
 
         setSize(800, 400);
         setLocationRelativeTo(null);

@@ -58,7 +58,7 @@ public class DemandeurInterface extends JFrame {
         });
         add(requestHelpButton);
 
-        // Utilisez les informations de l'utilisateur pour personnaliser l'interface
+        //  informations de l'utilisateur pour personnaliser l'interface
         JLabel userLabel = new JLabel("Bienvenue, " + utilisateur.getNom() + " " + utilisateur.getPrenom());
         userLabel.setHorizontalAlignment(SwingConstants.CENTER);
         add(userLabel);

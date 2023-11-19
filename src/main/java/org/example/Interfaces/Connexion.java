@@ -46,11 +46,11 @@ public class Connexion extends JFrame {
                 if (utilisateur != null) {
                     JOptionPane.showMessageDialog(null, "Connexion réussie. Redirection... " + utilisateur.getNom() + " " + utilisateur.getPrenom() + "!");
                     if (utilisateur.getType() == 1) {  // Valideur
-                        new ValideurInterface();
+                        new ValideurInterface(utilisateur);
                     } else if (utilisateur.getType() == 2) {  // Demandeur
-                        new DemandeurInterface();
+                        new DemandeurInterface(utilisateur);
                     } else if (utilisateur.getType() == 3) {  // Benevole
-                        new BenevoleInterface();
+                        new BenevoleInterface(utilisateur);
                     }
 
                     // Fermer l'interface de création de compte

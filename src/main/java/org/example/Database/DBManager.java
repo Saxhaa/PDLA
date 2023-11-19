@@ -145,7 +145,21 @@ public class DBManager {
             try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
                 preparedStatement.setString(1, mail);
                 preparedStatement.setString(2, password);
-
+                ResultSet res=preparedStatement.executeQuery();
+                if(res.next()){
+                    System.out.println("Utilisateur authentifié");
+                }
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        utilisateur = new Utilisateur();
+                        utilisateur.setId(resultSet.getInt("id"));
+                        utilisateur.setNom(resultSet.getString("nom"));
+                        utilisateur.setPrenom(resultSet.getString("prenom"));
+                        utilisateur.setMail(resultSet.getString("mail"));
+                        utilisateur.setPassword(resultSet.getString("password"));
+                        utilisateur.setType(resultSet.getInt("type"));
+                    }
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -156,21 +170,7 @@ public class DBManager {
     }
 
     public static void main(String[] args) {
-        // Test de la connexion
-            /*Connection connection = Connection();
 
-            if (connection != null) {
-                System.out.println("Connexion réussie !");
-                DBManager db = DBManager.getInstance();
-                if (tableMission!=1)
-                    db.CreateTableMission();
-                if (tableUser!=1)
-                    db.CreateTableUser();
-
-
-            } else {
-                System.out.println("Échec de la connexion.");
-            }*/
 
     }
 }

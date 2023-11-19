@@ -68,11 +68,11 @@ public class CreationAccount extends JFrame {
 
                     // Vérification du type d'utilisateur et redirection
                     if (tipoPersona == 1) {  // Valideur
-                        new ValideurInterface();
+                        new ValideurInterface(util);
                     } else if (tipoPersona == 2) {  // Demandeur
-                         new DemandeurInterface();
+                         new DemandeurInterface(util);
                     } else if (tipoPersona == 3) {  // Benevole
-                        new BenevoleInterface();
+                        new BenevoleInterface(util);
                     }
 
                     // Fermer l'interface de création de compte

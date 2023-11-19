@@ -16,7 +16,7 @@ public class DBManager {
     private static int tableMission;
     private static DBManager instance;
 
-    private DBManager() {
+    public DBManager() {
         connection = DBManager.Connection();
     }
 
@@ -91,26 +91,27 @@ public class DBManager {
         }
     }
 
-        public void CreateTableUser(){
-            try {
-                Connection conn = Connection();
-                Statement stmt = conn.createStatement();
-                //étape 4: exécuter la requéte
-                String sql = "CREATE TABLE User " +
-                        "(id INTEGER," +
-                        " nom VARCHAR(255), " +
-                        " prenom VARCHAR(255), " +
-                        " mail VARCHAR(255), " +
-                        " password VARCHAR(255), " +
-                        " type INTEGER)";
-                stmt.executeUpdate(sql);
-                System.out.println("Table User créée avec succés...");
-                tableUser=1;
+    public boolean CreateTableUser(){
+        try {
+            Connection conn = Connection();
+            Statement stmt = conn.createStatement();
+            //étape 4: exécuter la requéte
+            String sql = "CREATE TABLE User " +
+                    "(id INTEGER," +
+                    " nom VARCHAR(255), " +
+                    " prenom VARCHAR(255), " +
+                    " mail VARCHAR(255), " +
+                    " password VARCHAR(255), " +
+                    " type INTEGER)";
+            stmt.executeUpdate(sql);
+            System.out.println("Table User créée avec succés...");
+            tableUser=1;
 
-            } catch (Exception e) {
-                System.out.println(e);
-            }
+        } catch (Exception e) {
+            System.out.println(e);
         }
+        return false;
+    }
 
 
 
@@ -154,8 +155,8 @@ public class DBManager {
         return utilisateur;
     }
 
-        public static void main(String[] args) {
-            // Test de la connexion
+    public static void main(String[] args) {
+        // Test de la connexion
             /*Connection connection = Connection();
 
             if (connection != null) {
@@ -171,8 +172,8 @@ public class DBManager {
                 System.out.println("Échec de la connexion.");
             }*/
 
-        }
     }
+}
 
-    //mysql -h srv-bdens.insa-toulouse.fr --port=3306 -u projet_gei_020  -p projet_gei_020
+//mysql -h srv-bdens.insa-toulouse.fr --port=3306 -u projet_gei_020  -p projet_gei_020
 //Ahlah6ug

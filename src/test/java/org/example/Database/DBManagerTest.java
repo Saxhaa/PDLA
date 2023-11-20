@@ -37,14 +37,21 @@ class DBManagerTest {
     @Test
     public void insertUserTest() {
         DBManager db = DBManager.getInstance();
-        assertTrue(db.insertUser(1, "nomTest", "prenomTest", "mailTest", "passwordTest", 1));
-        Utilisateur user = db.getUserByConn("test@mail.com", "testPassword");
+        int id=1;
+        assertTrue(db.insertUser(id, "nomTest", "prenomTest", "mailTest", "passwordTest", 1));
+
+        Utilisateur user = db.getUserByConn("mailTest", "passwordTest");
+
+        if (user == null) {
+            fail("L'utilisateur n'a pas été trouvé dans la base de données.");
+        }
         assertEquals("nomTest", user.getNom());
         assertEquals("prenomTest", user.getPrenom());
         assertEquals("mailTest", user.getMail());
         assertEquals("passwordTest", user.getPassword());
         assertEquals(1, user.getType());
-        assertEquals(1, user.getId());
+        assertEquals(id, user.getId());
+
     }
 
     private DBManager db;

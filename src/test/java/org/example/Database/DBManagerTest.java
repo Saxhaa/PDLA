@@ -148,16 +148,23 @@ class DBManagerTest {
     }
 
 
-    /*@Test
+    @Test
     public void testGetUserByConn() {
-        // Testez la méthode getUserByConn ici
-        User expectedUser = new User("user@email.com", "password", "John Doe");
-        User actualUser = DBManager.getInstance().getUserByConn("user@email.com", "password");
+        DBManager db = DBManager.getInstance();
+        // Insert a test user into the User table
+        assertTrue(db.insertUser(1, "John", "Dupont", "exemple@gmail.com", "abcd", 1));
 
-        assertEquals(expectedUser, actualUser);
-    } j'ai grave du mal je comprends pas donc à faire plus tard*/
+        // Test the getUserByConn method
+        Utilisateur retrievedUser = db.getUserByConn("exemple@gmail.com", "abcd");
 
-
+        assertNotNull(retrievedUser);
+        assertEquals(1, retrievedUser.getId());
+        assertEquals("John", retrievedUser.getNom());
+        assertEquals("Dupont", retrievedUser.getPrenom());
+        assertEquals("exemple@gmail.com", retrievedUser.getMail());
+        assertEquals("abcd", retrievedUser.getPassword());
+        assertEquals(1, retrievedUser.getType());
+    }
 
 
 }

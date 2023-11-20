@@ -16,8 +16,10 @@ public class DBManager {
     private static int tableMission;
     private static DBManager instance;
 
-    public DBManager() {
+    private DBManager() {
         connection = DBManager.Connection();
+        this.CreateTableMission();
+        this.CreateTableUser();
     }
 
     public static DBManager getInstance() {
@@ -142,9 +144,8 @@ public class DBManager {
     // Méthode pour récupérer un utilisateur par son identifiant
     public Utilisateur getUserByConn(String mail, String password) {
         Utilisateur utilisateur = null;
-        try (Connection conn = Connection()) {
             String sql = "SELECT * FROM User WHERE mail = ? and password = ?";
-            try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
                 preparedStatement.setString(1, mail);
                 preparedStatement.setString(2, password);
                 ResultSet res=preparedStatement.executeQuery();
@@ -162,7 +163,7 @@ public class DBManager {
                         utilisateur.setType(resultSet.getInt("type"));
                     }
                 }
-            }
+
         } catch (SQLException e) {
             e.printStackTrace();
             System.err.println("Erreur lors de la récupération de l'utilisateur.");

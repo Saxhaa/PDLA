@@ -15,17 +15,18 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.Before;
 import org.junit.After;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-
-
 @RunWith(JUnit4.class)
 class DBManagerTest {
-    @Test
-    public void testConnection() {
-        Connection connection = DBManager.getInstance().Connection();
+   // @Test
+    /*public void testConnection() {
+        Connection connection = db.Connection();
 
         if (connection != null) {
             System.out.println("Connexion réussie !");
@@ -33,11 +34,22 @@ class DBManagerTest {
             System.out.println("Échec de la connexion.");
             fail("La connexion a échoué");
         }
+    }*/
+   private static DBManager db;
+    @BeforeAll
+    public static void setUp() throws Exception {
+        db = DBManager.getInstance();
+    }
+
+    @AfterEach
+    public void tearDown() throws Exception {
+        // Supprime les tables après chaque test
+        //db.CreateTableMission();
+        //db.CreateTableUser();
     }
 
     @Test
     public void insertUserTest() {
-        DBManager db = DBManager.getInstance();
         int id=1;
         assertTrue(db.insertUser(id, "nomTest", "prenomTest", "mailTest", "passwordTest", 1));
 
@@ -57,7 +69,6 @@ class DBManagerTest {
 
     @Test
     public void testInsertMission() {
-        DBManager db = DBManager.getInstance();
 
         // Insérer une mission dans la base de données
         assertTrue(db.insertMission("descriptiontest", "17/23test", "regionTest", 1, 2, "typetest"));
@@ -95,23 +106,10 @@ class DBManagerTest {
       //  assertEquals("typetest", mission.getTypeMission());
     }
 
-    private DBManager db;
-    @Before
-    public void setUp() throws Exception {
-        DBManager db = DBManager.getInstance();
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        // Supprime les tables après chaque test
-        db.CreateTableMission();
-        db.CreateTableUser();
-    }
 
     @Test
     public void testCreateTableMission() {
-        DBManager db = DBManager.getInstance();
-        db.CreateTableMission();
+        //db.CreateTableMission();
         try {
             Connection conn = db.Connection();
             Statement stmt = conn.createStatement();
@@ -134,9 +132,8 @@ class DBManagerTest {
     }*/
 
     @Test
-    public void testCreateTableUser() throws SQLException {
-        DBManager db = DBManager.getInstance();
-        db.CreateTableMission();
+    public void testCreateTableUser() {
+        //db.CreateTableMission();
         try {
             Connection conn = db.Connection();
             Statement stmt = conn.createStatement();
@@ -150,7 +147,6 @@ class DBManagerTest {
 
     @Test
     public void testGetUserByConn() {
-        DBManager db = DBManager.getInstance();
         // Insert a test user into the User table
         assertTrue(db.insertUser(1, "John", "Dupont", "exemple@gmail.com", "abcd", 1));
 

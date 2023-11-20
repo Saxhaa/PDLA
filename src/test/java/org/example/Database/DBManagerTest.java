@@ -1,6 +1,7 @@
 package org.example.Database;
 
 import org.example.Database.DBManager;
+import org.example.Mission.Mission;
 import org.example.Users.Utilisateur;
 
 import java.sql.*;
@@ -54,6 +55,26 @@ class DBManagerTest {
 
     }
 
+    @Test
+    public void testInsertMission() {
+        DBManager db = DBManager.getInstance();
+
+        assertTrue(db.insertMission("descriptiontest", "17/23test", "regionTest", 1, 2, "typetest" ));
+
+        Mission mission = db.getUserByConn("mailTest", "passwordTest");
+
+        if (user == null) {
+            fail("L'utilisateur n'a pas été trouvé dans la base de données.");
+        }
+        assertEquals("nomTest", user.getNom());
+        assertEquals("prenomTest", user.getPrenom());
+        assertEquals("mailTest", user.getMail());
+        assertEquals("passwordTest", user.getPassword());
+        assertEquals(1, user.getType());
+        assertEquals(id, user.getId());
+    }
+
+
     private DBManager db;
     @Before
     public void setUp() throws Exception {
@@ -82,7 +103,6 @@ class DBManagerTest {
 
     }
 
-    private Connection connection;
 
     /*@Before
     public void setUp() throws SQLException {
@@ -107,11 +127,6 @@ class DBManagerTest {
         }
     }
 
-    @Test
-    public void testInsertMission() {
-        boolean result = db.insertMission("Mission test", "2021-03-25", "Sud?", 1, 1, "Demande");
-        assertTrue(result);
-    }
 
     /*@Test
     public void testGetUserByConn() {

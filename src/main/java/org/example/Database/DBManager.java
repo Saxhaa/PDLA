@@ -91,6 +91,31 @@ public class DBManager {
         }
     }
 
+
+
+    public boolean insertMission(String description, String date, String region, int idMission, int idUtilisateur, String type) {
+        PreparedStatement stmt = null;
+        try  {
+            String sql = "INSERT INTO Mission (type,description,date,region ,idMission, idUtilisateur) VALUES (?, ?, ?, ?, ?, ?)";
+            stmt = connection.prepareStatement(sql);
+            stmt.setString(1,type );
+            stmt.setString(2, description);
+            stmt.setString(3,date);
+            stmt.setString(4, region);
+            stmt.setInt(5, idMission);
+            stmt.setInt(6, idUtilisateur);
+//test
+            int filasAfectadas = stmt.executeUpdate();
+            tableMission=1;
+            return filasAfectadas > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
     public boolean CreateTableUser(){
         try {
             Connection conn = Connection();
@@ -114,29 +139,6 @@ public class DBManager {
     }
 
 
-
-    public boolean insertMission(String description, String date, String region, int idMission, int idUtilisateur, String type) {
-        PreparedStatement stmt = null;
-        try  {
-            String sql = "INSERT INTO Mision (type,description,date,region ,idMission, idUtilisateur) VALUES (?, ?, ?, ?, ?, ?)";
-            stmt = connection.prepareStatement(sql);
-            stmt.setString(1,type );
-            stmt.setString(2, description);
-            stmt.setString(3,date);
-            stmt.setString(4, region);
-            stmt.setInt(5, idMission);
-            stmt.setInt(6, idUtilisateur);
-//test
-            int filasAfectadas = stmt.executeUpdate();
-            tableMission=1;
-            return filasAfectadas > 0;
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-
-    }
     // Méthode pour récupérer un utilisateur par son identifiant
     public Utilisateur getUserByConn(String mail, String password) {
         Utilisateur utilisateur = null;
@@ -167,7 +169,7 @@ public class DBManager {
         }
 
         return utilisateur;
-    }
+    }//
 
     public static void main(String[] args) {
 

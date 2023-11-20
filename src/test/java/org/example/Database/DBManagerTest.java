@@ -59,21 +59,41 @@ class DBManagerTest {
     public void testInsertMission() {
         DBManager db = DBManager.getInstance();
 
-        assertTrue(db.insertMission("descriptiontest", "17/23test", "regionTest", 1, 2, "typetest" ));
+        // Insérer une mission dans la base de données
+        assertTrue(db.insertMission("descriptiontest", "17/23test", "regionTest", 1, 2, "typetest"));
 
-        Mission mission = db.getUserByConn("mailTest", "passwordTest");
+        // Récupérer la mission de la base de données par requête SQL
+        Mission mission = null;
+        try {
+            Connection conn = db.Connection();
+            Statement stmt = conn.createStatement();
+            String sql = "SELECT * FROM Mission WHERE description = 'descriptiontest'";
+            ResultSet rs = stmt.executeQuery(sql);
 
-        if (user == null) {
-            fail("L'utilisateur n'a pas été trouvé dans la base de données.");
+            if (rs.next()) {
+                // Créer un objet Mission à partir des résultats de la requête
+                mission = new Mission();
+                mission.setDescription(rs.getString("description"));
+                mission.setDate(rs.getString("date"));
+                mission.setRegion(rs.getString("region"));
+               // mission.setUtilisateur(rs.getInt("idUtilisateur"));
+                mission.setIdTypeMission(rs.getInt("idMission"));
+               // mission.setTypeMission(rs.getString("typeMission"));
+            }
+
+        } catch (Exception e) {
+            fail("Exception: " + e);
         }
-        assertEquals("nomTest", user.getNom());
-        assertEquals("prenomTest", user.getPrenom());
-        assertEquals("mailTest", user.getMail());
-        assertEquals("passwordTest", user.getPassword());
-        assertEquals(1, user.getType());
-        assertEquals(id, user.getId());
-    }
 
+        // Vérifier que la mission a été récupérée avec succès
+        assertNotNull(mission, "La mission doit être présente dans la base de données.");
+        assertEquals("descriptiontest", mission.getDescription());
+        assertEquals("17/23test", mission.getDate());
+        assertEquals("regionTest", mission.getRegion());
+       // assertEquals(1, mission.getIdUtilisateur());
+        //assertEquals(2, mission.getIdTypeMission());
+      //  assertEquals("typetest", mission.getTypeMission());
+    }
 
     private DBManager db;
     @Before

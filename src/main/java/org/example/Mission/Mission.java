@@ -27,6 +27,8 @@ public class Mission {
 
     }
 
+    public Mission(){};
+
 
     public String getDescription() {
         return description;
@@ -59,5 +61,17 @@ public class Mission {
     }
 
 
+    public void setDate(String date) { this.date=date;
+    }
+
+    public void setRegion(String region) { this.region=region;
+    }
+
+    public void setUtilisateur(Utilisateur user) { this.user=user;
+    }
+
+    public void setIdTypeMission(int idMission) { this.id=idMission;    }
+
+    public void setTypeMission(EnumMission typeMission) { this.type=typeMission;    }
 }
 //

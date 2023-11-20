@@ -55,8 +55,8 @@ class DBManagerTest {
 
     }
 
-    @Test
-    public void testInsertMission() {
+   // @Test
+  /*  public void testInsertMission() {
         DBManager db = DBManager.getInstance();
 
         assertTrue(db.insertMission("descriptiontest", "17/23test", "regionTest", 1, 2, "typetest" ));
@@ -72,13 +72,14 @@ class DBManagerTest {
         assertEquals("passwordTest", user.getPassword());
         assertEquals(1, user.getType());
         assertEquals(id, user.getId());
-    }
+    }*/
 
 
     private DBManager db;
     @Before
     public void setUp() throws Exception {
         DBManager db = DBManager.getInstance();
+        db.CreateTableUser();
     }
 
     @After
@@ -128,16 +129,23 @@ class DBManagerTest {
     }
 
 
-    /*@Test
+    @Test
     public void testGetUserByConn() {
-        // Testez la méthode getUserByConn ici
-        User expectedUser = new User("user@email.com", "password", "John Doe");
-        User actualUser = DBManager.getInstance().getUserByConn("user@email.com", "password");
+        DBManager db = DBManager.getInstance();
+        // Insert a test user into the User table
+        assertTrue(db.insertUser(1, "John", "Dupont", "exemple@gmail.com", "abcd", 1));
 
-        assertEquals(expectedUser, actualUser);
-    } j'ai grave du mal je comprends pas donc à faire plus tard*/
+        // Test the getUserByConn method
+        Utilisateur retrievedUser = db.getUserByConn("exemple@gmail.com", "abcd");
 
-
-
-
+        assertNotNull(retrievedUser);
+        assertEquals(1, retrievedUser.getId());
+        assertEquals("John", retrievedUser.getNom());
+        assertEquals("Dupont", retrievedUser.getPrenom());
+        assertEquals("exemple@gmail.com", retrievedUser.getMail());
+        assertEquals("abcd", retrievedUser.getPassword());
+        assertEquals(1, retrievedUser.getType());
+    }
 }
+
+

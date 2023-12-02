@@ -23,7 +23,7 @@ public class ValideurInterface extends JFrame {
         initializeUI();
     }
     private void initializeUI() {
-        setTitle("Interfaz para Valideur");
+        setTitle("Interface Valideur");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new GridLayout(1, 3));
 
@@ -41,17 +41,17 @@ public class ValideurInterface extends JFrame {
 
         // Caja para aprobar solicitudes
         JPanel approvalPanel = new JPanel(new GridLayout(3, 2));
-        approvalPanel.setBorder(BorderFactory.createTitledBorder("Aprobar Solicitudes"));
+        approvalPanel.setBorder(BorderFactory.createTitledBorder("Aprouver solicitude"));
 
-        approvalPanel.add(new JLabel("Número de Solicitud Benevole:"));
+        approvalPanel.add(new JLabel("Numero de Solicitude Benevole:"));
         benevoleApprovalField = new JTextField();
         approvalPanel.add(benevoleApprovalField);
 
-        approvalPanel.add(new JLabel("Número de Solicitud Demandeur:"));
+        approvalPanel.add(new JLabel("Numero de Solicitude Demandeur:"));
         demandeurApprovalField = new JTextField();
         approvalPanel.add(demandeurApprovalField);
 
-        JButton approveButton = new JButton("Aprobar Solicitudes");
+        JButton approveButton = new JButton("Aprouver solicitudes");
         approveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -61,8 +61,8 @@ public class ValideurInterface extends JFrame {
 
                 // ... Lógica para aprobar las solicitudes ...
                 // Actualizar las cajas de solicitudes
-                benevoleRequestsTextArea.append("Solicitud " + benevoleNumber + " Aprobada\n");
-                demandeurRequestsTextArea.append("Solicitud " + demandeurNumber + " Aprobada\n");
+                benevoleRequestsTextArea.append("Solicitude " + benevoleNumber + " Aprouver\n");
+                demandeurRequestsTextArea.append("Solicitude " + demandeurNumber + " Apeouver\n");
             }
         });
 

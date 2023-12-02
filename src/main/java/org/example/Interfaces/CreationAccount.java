@@ -61,24 +61,29 @@ public class CreationAccount extends JFrame {
                     type=enumUtilisateur.benevole;*/
 
                 DBManager db = DBManager.getInstance();
-                Utilisateur util = new Utilisateur(nomText, prenomText, mailText, password, tipoPersona);
-
-                if (db.insertUser(util.getId(), nomText, prenomText, mailText, password, tipoPersona)) {
-                    JOptionPane.showMessageDialog(null, "Utilisateur créé avec succès.");
-
-                    // Vérification du type d'utilisateur et redirection
-                    if (tipoPersona == 1) {  // Valideur
-                        new ValideurInterface(util);
-                    } else if (tipoPersona == 2) {  // Demandeur
-                         new DemandeurInterface(util);
-                    } else if (tipoPersona == 3) {  // Benevole
-                        new BenevoleInterface(util);
-                    }
-
-                    // Fermer l'interface de création de compte
-                    dispose();
+                if (db.isEmailAlreadyUsed(mailText)) {
+                    JOptionPane.showMessageDialog(null, "Cet email est déjà associé à un utilisateur. Veuillez utiliser un autre email.");
                 } else {
-                    JOptionPane.showMessageDialog(null, "Erreur lors de la création de l'utilisateur.");
+                    Utilisateur util = new Utilisateur(nomText, prenomText, mailText, password, tipoPersona);
+
+                    if (db.insertUser(util.getId(), nomText, prenomText, mailText, password, tipoPersona)) {
+                        JOptionPane.showMessageDialog(null, "Utilisateur créé avec succès.");
+
+                        // Vérification du type d'utilisateur et redirection
+                        if (tipoPersona == 1) {  // Valideur
+                            new ValideurInterface(util);
+                        } else if (tipoPersona == 2) {  // Demandeur
+                            new DemandeurInterface(util);
+                        } else if (tipoPersona == 3) {  // Benevole
+                            new BenevoleInterface(util);
+                        }
+
+
+                        // Fermer l'interface de création de compte
+                        dispose();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Erreur lors de la création de l'utilisateur.");
+                    }
                 }
             }
         });

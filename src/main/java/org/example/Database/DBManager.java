@@ -52,6 +52,10 @@ public class DBManager {
 
     public boolean insertUser(int id,String nom, String prenom, String mail, String password, int type) {
         PreparedStatement stmt = null;
+        if (isEmailAlreadyUsed(mail)) {
+            System.out.println("Cet email est déjà associé à un utilisateur. Veuillez utiliser un autre email.");
+            return true;
+        }
         try  {
             String sql = "INSERT INTO User (id,nom,prenom, mail,password, type) VALUES (?, ?, ?, ?, ?, ?)";
             stmt = connection.prepareStatement(sql);
@@ -71,6 +75,33 @@ public class DBManager {
             return false;
         }
 
+    }
+
+    public boolean isEmailAlreadyUsed(String email) {
+        PreparedStatement stmt = null;
+        try {
+            String sql = "SELECT COUNT(*) FROM User WHERE mail = ?";
+            stmt = connection.prepareStatement(sql);
+            stmt.setString(1, email);
+
+            try (ResultSet resultSet = stmt.executeQuery()) {
+                if (resultSet.next()) {
+                    int count = resultSet.getInt(1);
+                    return count > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return false;
     }
 
     public void CreateTableMission(){ //la estoy haciendo

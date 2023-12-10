@@ -41,15 +41,15 @@ public class Connexion extends JFrame {
                 String mail = champMail.getText();
                 char[] password = champPassword.getPassword();
 
-                Utilisateur utilisateur = DBManager.getInstance().getUserByConn(mail, new String(password));
+                Utilisateur utilisateur = DBManager.getInstance().getUserByConnexion(mail, new String(password));
 
                 if (utilisateur != null) {
                     JOptionPane.showMessageDialog(null, "Connexion réussie. Redirection... " + utilisateur.getNom() + " " + utilisateur.getPrenom() + "!");
-                    if (utilisateur.getType() == 1) {  // Valideur
+                    if (utilisateur.getType() == 3) {  // Valideur
                         new ValideurInterface(utilisateur);
-                    } else if (utilisateur.getType() == 2) {  // Demandeur
+                    } else if (utilisateur.getType() == 1) {  // Demandeur
                         new DemandeurInterface(utilisateur);
-                    } else if (utilisateur.getType() == 3) {  // Benevole
+                    } else if (utilisateur.getType() == 2) {  // Benevole
                         new BenevoleInterface(utilisateur);
                     }
 

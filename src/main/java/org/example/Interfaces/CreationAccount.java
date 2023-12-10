@@ -37,7 +37,7 @@ public class CreationAccount extends JFrame {
         mail = new JTextField();
         campoPassword = new JPasswordField();
 
-        String[] tiposPersona = {"Valideur", "Demandeur", "Benevole"};
+        String[] tiposPersona = {"Demandeur", "Benevole"};
         comboTipoPersona = new JComboBox<>(tiposPersona);
 
         botonCrearUsuario = new JButton("Creer utilisateur");
@@ -70,11 +70,9 @@ public class CreationAccount extends JFrame {
                         JOptionPane.showMessageDialog(null, "Utilisateur créé avec succès.");
 
                         // Vérification du type d'utilisateur et redirection
-                        if (tipoPersona == 1) {  // Valideur
-                            new ValideurInterface(util);
-                        } else if (tipoPersona == 2) {  // Demandeur
+                        if (tipoPersona == 1) {  // Demandeur
                             new DemandeurInterface(util);
-                        } else if (tipoPersona == 3) {  // Benevole
+                        } else if (tipoPersona == 2) {  // Benevole
                             new BenevoleInterface(util);
                         }
 

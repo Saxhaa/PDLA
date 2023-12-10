@@ -8,9 +8,9 @@ public class Utilisateur {
 
     private int type;
 
-    private static int totalUtilisateur = 0;
+    //private static int totalUtilisateur = 0;
 
-    private int id;
+    int id;
 
     public Utilisateur() {
     }
@@ -19,7 +19,7 @@ public class Utilisateur {
         this.prenom = prenom;
         this.password = password;
         this.mail = mail;
-        this.id = totalUtilisateur++;
+        //this.id = totalUtilisateur++;
         this.type = type;
     }
 
@@ -62,11 +62,3 @@ public class Utilisateur {
     public void setType(int type) {this.type=type;
     }
 }
-
-//
-
-//A faire
-//une classe par type user
-//dans demandeur : constructeur +une methode de demande d'aide
-//valideur : constructeur + valider + renoncer
-//....

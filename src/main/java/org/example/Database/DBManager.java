@@ -1,8 +1,11 @@
 package org.example.Database;
 
+import org.example.Mission.Mission;
 import org.example.Users.Utilisateur;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DBManager {
 
@@ -50,33 +53,6 @@ public class DBManager {
     }
 
 
-    public boolean insertUser(int id,String nom, String prenom, String mail, String password, int type) {
-        PreparedStatement stmt = null;
-        if (isEmailAlreadyUsed(mail)) {
-            System.out.println("Cet email est déjà associé à un utilisateur. Veuillez utiliser un autre email.");
-            return true;
-        }
-        try  {
-            String sql = "INSERT INTO User (id,nom,prenom, mail,password, type) VALUES (?, ?, ?, ?, ?, ?)";
-            stmt = connection.prepareStatement(sql);
-            stmt.setInt(1, id);
-            stmt.setString(2, nom);
-            stmt.setString(3, prenom);
-            stmt.setString(4, mail);
-            stmt.setString(5, password);
-            stmt.setInt(6, type);
-//test
-            int filasAfectadas = stmt.executeUpdate();
-            tableMission=1;
-            return filasAfectadas > 0;
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-
-    }
-
     public boolean isEmailAlreadyUsed(String email) {
         PreparedStatement stmt = null;
         try {
@@ -104,52 +80,29 @@ public class DBManager {
         return false;
     }
 
-    public void CreateTableMission(){ //la estoy haciendo
+    public boolean CreateTableMission(){
         try {
             Connection conn = Connection();
             Statement stmt = conn.createStatement();
-            //étape 4: exécuter la requéte
             String sql = "CREATE TABLE Mission " +
-                    "(type VARCHAR(255), " +
-                    " description VARCHAR(255), " +
-                    " date VARCHAR(255), " +
-                    " region VARCHAR(255), " +
-                    " idMission INTEGER, " +
-                    " idUtilisateur INTEGER)";
+                    "(mailUser VARCHAR(255), " +
+                    "description VARCHAR(255), " +
+                    "date VARCHAR(255), " +
+                    "region VARCHAR(255), "+
+                    "mailRepondeur VARCHAR(255), "+
+                    "statut INTEGER)";
+
             stmt.executeUpdate(sql);
             System.out.println("Table créée Mission avec succés...");
-
+            tableMission = 1;
+            return true;
         } catch (Exception e) {
             System.out.println(e);
-        }
-    }
-
-
-
-    public boolean insertMission(String description, String date, String region, int idMission, int idUtilisateur, String type) {
-        PreparedStatement stmt = null;
-        try  {
-            String sql = "INSERT INTO Mission (type,description,date,region ,idMission, idUtilisateur) VALUES (?, ?, ?, ?, ?, ?)";
-            stmt = connection.prepareStatement(sql);
-            stmt.setString(1,type );
-            stmt.setString(2, description);
-            stmt.setString(3,date);
-            stmt.setString(4, region);
-            stmt.setInt(5, idMission);
-            stmt.setInt(6, idUtilisateur);
-//test
-            int filasAfectadas = stmt.executeUpdate();
-            tableMission=1;
-            return filasAfectadas > 0;
-
-        } catch (SQLException e) {
-            e.printStackTrace();
             return false;
         }
-
     }
 
-    public boolean CreateTableUser(){
+    public boolean CreateTableUser() {
         try {
             Connection conn = Connection();
             Statement stmt = conn.createStatement();
@@ -163,17 +116,73 @@ public class DBManager {
                     " type INTEGER)";
             stmt.executeUpdate(sql);
             System.out.println("Table User créée avec succés...");
-            tableUser=1;
-
+            tableUser = 1;
+            return true;
         } catch (Exception e) {
             System.out.println(e);
+            return false;
         }
-        return false;
+
     }
 
 
+
+    public boolean insertMission(Mission mission) {
+        PreparedStatement stmt = null;
+        try {
+            String sql = "INSERT INTO Mission (mailUser, description, date, region, mailRepondeur ,statut) " + "VALUES (?,?, ?, ?, ?,?)";
+            stmt= connection.prepareStatement(sql);
+
+            stmt.setString(1, mission.getUser().getMail());
+            stmt.setString(2, mission.getDescription());
+            stmt.setString(3, mission.getDate());
+            stmt.setString(4, mission.getRegion());
+            stmt.setString(5, "-");
+            stmt.setInt(6, mission.getStatut());
+
+            int res = stmt.executeUpdate();
+            return res > 0;
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    public boolean insertUser(int id,String nom, String prenom, String mail, String password, int type) {
+        PreparedStatement stmt = null;
+        if (isEmailAlreadyUsed(mail)) {
+            System.out.println("Cet email est déjà associé à un utilisateur. Veuillez utiliser un autre email.");
+            return true;
+        }
+        try  {
+            String sql = "INSERT INTO User (id,nom,prenom, mail,password, type) VALUES (?, ?, ?, ?, ?, ?)";
+            stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, id);
+            stmt.setString(2, nom);
+            stmt.setString(3, prenom);
+            stmt.setString(4, mail);
+            stmt.setString(5, password);
+            stmt.setInt(6, type);
+
+            int filasAfectadas = stmt.executeUpdate();
+            return filasAfectadas > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
+
+
+
+
     // Méthode pour récupérer un utilisateur par son identifiant
-    public Utilisateur getUserByConn(String mail, String password) {
+    public Utilisateur getUserByConnexion(String mail, String password) {
         Utilisateur utilisateur = null;
             String sql = "SELECT * FROM User WHERE mail = ? and password = ?";
             try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -203,11 +212,235 @@ public class DBManager {
         return utilisateur;
     }//
 
-    public static void main(String[] args) {
 
 
+
+    public void deleteTestUser() {
+        String sql = "DELETE FROM User WHERE mail LIKE 'mailTest%'";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
+
+    public void deleteTestMission() {
+        String sql = "DELETE FROM Mission WHERE description LIKE 'descriptionTest%'";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Utilisateur getUserByEmail(String email) {
+        PreparedStatement stmt = null;
+        Utilisateur utilisateur = null;
+        try {
+            String sql = "SELECT * FROM User WHERE mail = ?";
+            stmt = connection.prepareStatement(sql);
+            stmt.setString(1, email);
+
+            try (ResultSet resultSet = stmt.executeQuery()) {
+                if (resultSet.next()) {
+                    utilisateur = new Utilisateur();
+                    utilisateur.setId(resultSet.getInt("id"));
+                    utilisateur.setNom(resultSet.getString("nom"));
+                    utilisateur.setPrenom(resultSet.getString("prenom"));
+                    utilisateur.setMail(resultSet.getString("mail"));
+                    utilisateur.setPassword(resultSet.getString("password"));
+                    utilisateur.setType(resultSet.getInt("type"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return utilisateur;
+    }
+
+    public List<Mission> getMissionsByUser(String userEmail) {
+        List<Mission> missions = new ArrayList<>();
+        PreparedStatement stmt = null;
+        try {
+            String sql = "SELECT * FROM Mission WHERE mailUser = ?";
+            stmt = connection.prepareStatement(sql);
+            stmt.setString(1, userEmail);
+
+            try (ResultSet resultSet = stmt.executeQuery()) {
+                while (resultSet.next()) {
+                    Mission mission = new Mission();
+                    mission.setUser(getUserByEmail(userEmail));
+                    mission.setDescription(resultSet.getString("description"));
+                    mission.setDate(resultSet.getString("date"));
+                    mission.setRegion(resultSet.getString("region"));
+                    mission.setStatut(resultSet.getInt("statut"));
+                    missions.add(mission);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return missions;
+    }
+
+
+    public List<Mission> getAllPropositions() {
+
+        List<Mission> missions = new ArrayList<>();
+        PreparedStatement stmt = null;
+        try {
+            String sql = "SELECT * FROM Mission M JOIN User U ON M.mailUser = U.mail WHERE U.type = ? AND M.statut = ?";
+            stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, 2); //type user 2 = benevole
+            stmt.setInt(2, 2); //type mission 2 = validée
+
+            try (ResultSet resultSet = stmt.executeQuery()) {
+                while (resultSet.next()) {
+                    Mission mission = new Mission();
+                    mission.setUser(getUserByEmail(resultSet.getString("mailUser")));
+                    mission.setDescription(resultSet.getString("description"));
+                    mission.setDate(resultSet.getString("date"));
+                    mission.setRegion(resultSet.getString("region"));
+                    mission.setStatut(resultSet.getInt("statut"));
+                    missions.add(mission);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return missions;
+    }
+
+    public List<Mission> getAlldemandes() {
+        List<Mission> missions = new ArrayList<>();
+        PreparedStatement stmt = null;
+        try {
+            String sql = "SELECT * FROM Mission M JOIN User U ON M.mailUser = U.mail WHERE U.type = ? AND M.statut = ?";
+            stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, 1); //type user 2 = demandeur
+            stmt.setInt(2, 2); //type mission 2 = validée
+
+            try (ResultSet resultSet = stmt.executeQuery()) {
+                while (resultSet.next()) {
+                    Mission mission = new Mission();
+                    mission.setUser(getUserByEmail(resultSet.getString("mailUser")));
+                    mission.setDescription(resultSet.getString("description"));
+                    mission.setDate(resultSet.getString("date"));
+                    mission.setRegion(resultSet.getString("region"));
+                    mission.setStatut(resultSet.getInt("statut"));
+                    missions.add(mission);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return missions;
+    }
+
+    public List<Mission> getAlldemandesEnAttente() {
+        List<Mission> missions = new ArrayList<>();
+        PreparedStatement stmt = null;
+        try {
+            String sql = "SELECT * FROM Mission M JOIN User U ON M.mailUser = U.mail WHERE U.type = ? AND M.statut = ?";
+            stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, 1); //type user 1 = demandeur
+            stmt.setInt(2, 1); //type mission 1 = en attente
+
+            try (ResultSet resultSet = stmt.executeQuery()) {
+                while (resultSet.next()) {
+                    Mission mission = new Mission();
+                    mission.setUser(getUserByEmail(resultSet.getString("mailUser")));
+                    mission.setDescription(resultSet.getString("description"));
+                    mission.setDate(resultSet.getString("date"));
+                    mission.setRegion(resultSet.getString("region"));
+                    mission.setStatut(resultSet.getInt("statut"));
+                    missions.add(mission);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return missions;
+    }
+
+    public List<Mission> getAllpropositionsEnAttente() {
+        List<Mission> missions = new ArrayList<>();
+        PreparedStatement stmt = null;
+        try {
+            String sql = "SELECT * FROM Mission M JOIN User U ON M.mailUser = U.mail WHERE U.type = ? AND M.statut = ?";
+            stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, 2); //type user 2= benevole
+            stmt.setInt(2, 1); //type mission 1 = en attente
+
+            try (ResultSet resultSet = stmt.executeQuery()) {
+                while (resultSet.next()) {
+                    Mission mission = new Mission();
+                    mission.setUser(getUserByEmail(resultSet.getString("mailUser")));
+                    mission.setDescription(resultSet.getString("description"));
+                    mission.setDate(resultSet.getString("date"));
+                    mission.setRegion(resultSet.getString("region"));
+                    mission.setStatut(resultSet.getInt("statut"));
+                    missions.add(mission);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return missions;
+    }
+
+    public void updateStatutMission(Mission demande, int i) { demande.setStatut(i); }
 }
+
+
 
 //mysql -h srv-bdens.insa-toulouse.fr --port=3306 -u projet_gei_020  -p projet_gei_020
 //Ahlah6ug
